@@ -40,9 +40,11 @@ public class AudioCaptureJMF {
             
         Processor p;
         p = null;
+        DataSink sink = null;
         Format[] formats = new Format[1];
         formats[0] = new AudioFormat(AudioFormat.GSM_RTP,8000,16,1);
         DataSource audioInputSource = null, processedAudioSource= null;
+        MediaLocator dest = new MediaLocator("live.wav");
         
             try{
             audioInputSource = Manager.createDataSource(mic);
@@ -55,10 +57,16 @@ public class AudioCaptureJMF {
             {
                 p = Manager.createRealizedProcessor(new ProcessorModel(audioInputSource,formats,new FileTypeDescriptor(FileTypeDescriptor.RAW)));
                 processedAudioSource = p.getDataOutput();
+                System.out.println(processedAudioSource.getContentType());
+                
+                sink = Manager.createDataSink(processedAudioSource, target);
+                p.start();  
+                sink.open();
+                sink.start();
+            
             }  
-            catch(Exception e)
+            catch(IOException | NoProcessorException | CannotRealizeException e)
             {
-                e.printStackTrace();
                 System.out.println("(error)-- no storage");
             }
                
@@ -75,20 +83,6 @@ public class AudioCaptureJMF {
         System.out.println("()--Error");
         }
          */  
-        
-        /*
-        DataSink sink;
-        MediaLocator dest = new MediaLocator("file://newfile.wav");
-        try {
-         sink = Manager.createDataSink(p.getDataOutput(), dest); 
-         sink.open();
-         sink.start();
-        } 
-        catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("()--Error");
-        }
-        */
     }   
     
 }
