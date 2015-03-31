@@ -46,61 +46,7 @@ public class AudioCaptureJMF {
             catch (IOException | NoPlayerException e) { 
             }
             
-            DataSource audioInputSource = null, processedAudioSource= null;
-            
-            try{
-            audioInputSource = Manager.createDataSource(mic);
-            }
-            catch(IOException | NoDataSourceException e){
-            System.out.println("(error)-- no mic");
-            }
-            
-        Processor p;
-        p = null;
-        DataSink sink = null;
-        Format[] formats = new Format[1];
-        formats[0] = new AudioFormat(AudioFormat.GSM_RTP,8000,16,1);
-        MediaLocator dest = new MediaLocator("live.wav");
-        URL url = null;
-        MediaLocator file;
-        
-            try{
-                url = new URL("file", null, "clap.wav");
-                file = new MediaLocator(url);
-            }
-            catch(){
-            }
-            
-            try
-            {
-                p = Manager.createRealizedProcessor(new ProcessorModel(audioInputSource,formats,new FileTypeDescriptor(FileTypeDescriptor.WAVE)));
-                processedAudioSource = p.getDataOutput();
-                System.out.println(processedAudioSource.getContentType());
-                
-                sink = Manager.createDataSink(p.getDataOutput(), dest);
-                p.start();  
-                sink.open();
-                sink.start();
-            
-            }  
-            catch(IOException | NoProcessorException | CannotRealizeException e)
-            {
-                System.out.println("(error)-- no storage");
-            }
-               
-        /*
-        DataSink sink;
-        MediaLocator dest = new MediaLocator("hello.wav");
-        try {
-        sink = Manager.createDataSink(p.getDataOutput(), dest);
-        sink.open();
-        sink.start();
-        }
-        catch (Exception e) {
-        e.printStackTrace();
-        System.out.println("()--Error");
-        }
-         */  
+          
     }   
     
 }
